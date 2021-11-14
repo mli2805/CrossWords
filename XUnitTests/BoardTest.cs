@@ -3,7 +3,7 @@ using Xunit;
 
 namespace XUnitTests
 {
-    public class BoarderTest
+    public class BoardTest
     {
         private const string Path = "C:\\VsGitProjects\\CrossWords\\CrossWordFiller\\Resources\\";
         private const string FileName1 = Path + "cross2_4.csv";
