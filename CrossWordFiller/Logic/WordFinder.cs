@@ -1,8 +1,10 @@
-﻿namespace CrossWordFiller
+﻿using System.Collections.Generic;
+
+namespace CrossWordFiller
 {
     public static class WordFinder
     {
-        public static bool Search(this WordInDict word, Words fullDict)
+        public static bool Search(this WordInDict word, Corpus fullDict, List<string> usedWords)
         {
             var words = fullDict.WLists[word.Mask.Length];
 
@@ -10,7 +12,7 @@
             {
                 for (int i = word.FoundInDictPos+1; i < words.Count; i++)
                 {
-                    if (words[i].IsMatch(word.Mask))
+                    if (!usedWords.Contains(words[i]) && words[i].IsMatch(word.Mask))
                     {
                         word.FoundInDictPos = i;
                         word.Word = words[i];

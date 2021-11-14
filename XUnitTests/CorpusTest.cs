@@ -1,18 +1,19 @@
-﻿using CrossWordFiller;
+﻿using System.Collections.Generic;
+using CrossWordFiller;
 using FluentAssertions;
 using Xunit;
 
 namespace XUnitTests
 {
-    public class WordsTest
+    public class CorpusTest
     {
         private const string Path = "C:\\VsGitProjects\\CrossWords\\CrossWordFiller\\Resources\\";
         private const string FileName = Path + "words.txt";
 
         [Fact]
-        public void LoadWords()
+        public void LoadCorpus()
         {
-            var words = new Words().LoadFromTxt(FileName);
+            var words = new Corpus().LoadFromTxt(FileName);
             words.WLists[6].Count.Should().Be(1653);
         }
 
@@ -26,27 +27,29 @@ namespace XUnitTests
         [Fact]
         public void SearchWord()
         {
-            var words = new Words().LoadFromTxt(FileName);
+            var words = new Corpus().LoadFromTxt(FileName);
             var wordInDict = new WordInDict()
             {
                 Mask = "00А0А0",
                 StartSearchInDictPos = 89,
                 FoundInDictPos = 430,
             };
-            wordInDict.Search(words).Should().BeTrue();
+            var empty = new List<string>();
+
+            wordInDict.Search(words, empty).Should().BeTrue();
             wordInDict.Word.Should().Be("КЛАПАН");
 
-            wordInDict.Search(words).Should().BeTrue();
+            wordInDict.Search(words, empty).Should().BeTrue();
             wordInDict.Word.Should().Be("ПЛАКАТ");
 
             wordInDict.FoundInDictPos = 1651;
-            wordInDict.Search(words).Should().BeTrue();
+            wordInDict.Search(words, empty).Should().BeTrue();
             wordInDict.Word.Should().Be("АНАНАС");
 
-            wordInDict.Search(words).Should().BeTrue();
+            wordInDict.Search(words, empty).Should().BeTrue();
             wordInDict.Word.Should().Be("АТАМАН");
 
-            wordInDict.Search(words).Should().BeFalse();
+            wordInDict.Search(words, empty).Should().BeFalse();
         }
 
     }

@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace CrossWordFiller
 {
-    public class Words
+    public class Corpus
     {
         public List<string>[] WLists { get; private set; }
 
-        public Words LoadFromTxt(string filename)
+        public Corpus LoadFromTxt(string filename)
         {
             const int maxLength = 25;
             WLists = new List<string>[maxLength + 1];

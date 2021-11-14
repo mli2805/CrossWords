@@ -38,5 +38,34 @@ namespace CrossWordFiller
             }
             File.WriteAllLines(filename, content);
         }
+
+        public string GetMask(Place place)
+        {
+            var line = place.Orientation == Orientation.Horizontal
+                ? Rows[place.LineNumber]
+                : this.GetColumnAsString(place.LineNumber);
+            return line.Substring(place.P.StartIdx, place.P.Length);
+        }
+
+        public void FillWord(WordOnBoard word)
+        {
+            if (word.Place.Orientation == Orientation.Horizontal)
+            {
+                Rows[word.Place.LineNumber]
+                    = Rows[word.Place.LineNumber].Substring(0, word.Place.P.StartIdx)
+                      + word.Word.Word
+                      + Rows[word.Place.LineNumber].Substring(word.Place.P.StartIdx + word.Word.Word.Length);
+            }
+            else
+            {
+                for (int i = 0; i < word.Word.Word.Length; i++)
+                {
+                    Rows[word.Place.P.StartIdx + i]
+                        = Rows[word.Place.P.StartIdx + i].Substring(0, word.Place.LineNumber)
+                          + word.Word.Word[i]
+                          + Rows[word.Place.P.StartIdx + i].Substring(word.Place.LineNumber + 1);
+                }
+            }
+        }
     }
 }
