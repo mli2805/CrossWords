@@ -1,4 +1,5 @@
 using CrossWordFiller;
+using FluentAssertions;
 using Xunit;
 
 namespace XUnitTests
@@ -11,7 +12,7 @@ namespace XUnitTests
         private const char CsvSeparator = ';';
 
         [Fact]
-        public void Test2()
+        public void LoadFromCsv()
         {
             var board = new CrossBoard().LoadFromCsv(FileName1,CsvSeparator);
             Assert.Equal(23, board.Rows.Length);
@@ -20,7 +21,7 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void Test3()
+        public void LoadSaveLoad()
         {
             var board = new CrossBoard().LoadFromCsv(FileName1,CsvSeparator);
             board.SaveToCsv(FileName2,CsvSeparator);
@@ -29,5 +30,14 @@ namespace XUnitTests
             Assert.Equal(25, board2.Rows[0].Length);
             Assert.Equal('1', board2.Rows[3][7]);
         }
+
+        [Fact]
+        public void GetColumnAsString()
+        {
+            var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
+            board.GetColumnAsString(5).Should().Be("10110110101010101101101");
+        }
+
+
     }
 }

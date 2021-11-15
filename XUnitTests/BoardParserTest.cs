@@ -13,50 +13,38 @@ namespace XUnitTests
         private const char CsvSeparator = ';';
 
         [Fact]
-        public void IndexOfNot()
-        {
-            var str = "11111111111111111111111111";
-            Assert.Equal(-1, str.IndexOfNot('1', 0));
-            var str2 = "1101100001111111111111111";
-            Assert.Equal(2, str2.IndexOfNot('1', 0));
-            Assert.Equal(5, str2.IndexOfNot('1', 3));
-        }
-
-        [Fact]
-        public void FindFirstPlaceForWord()
-        {
-            var str = "11111111111111111111111111";
-            Assert.Null(str.FindFirstPlaceForWord(0));
-            var str2 = "110110АБ01111111111111111";
-            str2.FindFirstPlaceForWord(0).Length.Should().Be(4);
-            str2.FindFirstPlaceForWord(13).Should().BeNull();
-        }
-
-        [Fact]
-        public void GetColumnAsString()
-        {
-            var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
-            board.GetColumnAsString(5).Should().Be("10110110101010101101101");
-        }
-
-        [Fact]
         public void GetFirstHorizontalPlace()
         {
             var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
-            var placeInLine = board.GetNextPlace(Orientation.Horizontal, null);
-            placeInLine.LineNumber.Should().Be(1);
-            placeInLine.P.StartIdx.Should().Be(1);
-            placeInLine.P.Length.Should().Be(7);
+            var place = board.GetNextPlace(Orientation.Horizontal, null);
+            place.LineNumber.Should().Be(1);
+            place.P.StartIdx.Should().Be(1);
+            place.P.Length.Should().Be(7);
+            place.CrossingCount.Should().Be(2);
         }
 
         [Fact]
         public void GetFirstVerticalPlace()
         {
             var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
-            var placeInLine = board.GetNextPlace(Orientation.Vertical, null);
-            placeInLine.LineNumber.Should().Be(2);
-            placeInLine.P.StartIdx.Should().Be(1);
-            placeInLine.P.Length.Should().Be(7);
+            var place = board.GetNextPlace(Orientation.Vertical, null);
+            place.LineNumber.Should().Be(2);
+            place.P.StartIdx.Should().Be(1);
+            place.P.Length.Should().Be(7);
+            place.CrossingCount.Should().Be(3);
+        }
+
+        [Fact]
+        public void CountCrossings()
+        {
+            var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
+            var verticals = board.GetAllOf(Orientation.Vertical).ToList();
+            verticals.Count.Should().Be(24);
+
+            verticals[2].LineNumber.Should().Be(4);
+            verticals[2].P.StartIdx.Should().Be(3);
+            verticals[2].P.Length.Should().Be(17);
+            verticals[2].CrossingCount.Should().Be(7);
         }
 
         [Fact]
@@ -73,13 +61,26 @@ namespace XUnitTests
         [Fact]
         public void GetPlaces()
         {
-            var board = new CrossBoard().LoadFromCsv(FileName2, CsvSeparator);
+            var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
             var places = board.GetPlaces();
-            places.Count.Should().Be(21);
-            places[5].Orientation.Should().Be(Orientation.Horizontal);
-            places[5].PlaceNumber.Should().Be(4);
-            places[19].Orientation.Should().Be(Orientation.Vertical);
-            places[19].PlaceNumber.Should().Be(8);
+            places.Count.Should().Be(50);
+            places[0].Orientation.Should().Be(Orientation.Vertical);
+            places[0].CrossingCount.Should().Be(7);
+            places[1].CrossingCount.Should().Be(7);
+            places[2].CrossingCount.Should().Be(7);
+            places[3].CrossingCount.Should().Be(7);
+            places[49].Orientation.Should().Be(Orientation.Vertical);
+            places[49].CrossingCount.Should().Be(2);
+            
+            var board3 = new CrossBoard().LoadFromCsv(FileName2, CsvSeparator);
+            var places3 = board3.GetPlaces();
+            places3.Count.Should().Be(21);
+            places3[0].Orientation.Should().Be(Orientation.Vertical);
+            places3[0].PlaceNumber.Should().Be(1);
+            places3[0].CrossingCount.Should().Be(3);
+            places3[20].Orientation.Should().Be(Orientation.Horizontal);
+            places3[20].PlaceNumber.Should().Be(9);
+            places3[20].CrossingCount.Should().Be(1);
         }
     }
 }

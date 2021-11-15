@@ -14,14 +14,16 @@ namespace XUnitTests
         public void LoadCorpus()
         {
             var words = new Corpus().LoadFromTxt(FileName);
+            words.WLists[2].Count.Should().Be(22);
             words.WLists[6].Count.Should().Be(1653);
-        }
-
-        [Fact]
-        public void IsMatch()
-        {
-            "СТАКАН".IsMatch("0А0А00").Should().Be(false);
-            "СТАКАН".IsMatch("00А0А0").Should().Be(true);
+            words.WLists[13].Count.Should().Be(88);
+            words.WLists[15].Count.Should().Be(14);
+            words.WLists[16].Count.Should().Be(11);
+            words.WLists[17].Count.Should().Be(1);
+            words.WLists[18].Count.Should().Be(1);
+            words.WLists[19].Count.Should().Be(1);
+            words.WLists[20].Count.Should().Be(0);
+            words.WLists[21].Count.Should().Be(0);
         }
 
         [Fact]
@@ -31,8 +33,8 @@ namespace XUnitTests
             var wordInDict = new WordInDict()
             {
                 Mask = "00А0А0",
-                StartSearchInDictPos = 89,
-                FoundInDictPos = 430,
+                StartSearchInDictPos = 519,
+                FoundInDictPos = -1,
             };
             var empty = new List<string>();
 
@@ -42,15 +44,13 @@ namespace XUnitTests
             wordInDict.Search(words, empty).Should().BeTrue();
             wordInDict.Word.Should().Be("ПЛАКАТ");
 
-            wordInDict.FoundInDictPos = 1651;
-            wordInDict.Search(words, empty).Should().BeTrue();
-            wordInDict.Word.Should().Be("АНАНАС");
-
-            wordInDict.Search(words, empty).Should().BeTrue();
-            wordInDict.Word.Should().Be("АТАМАН");
+            for (int i = 0; i < 10; i++)
+            {
+                wordInDict.Search(words, empty).Should().BeTrue();
+            }
+            wordInDict.Word.Should().Be("ЕРАЛАШ");
 
             wordInDict.Search(words, empty).Should().BeFalse();
         }
-
     }
 }

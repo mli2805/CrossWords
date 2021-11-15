@@ -6,30 +6,21 @@ namespace CrossWordFiller
     public static class BoardParser
     {
         /// <summary>
-        /// не самый лучший способ выбрать порядок заполнения
-        /// лучше наверное упорядочить слова по количеству пересечений, от большего к меньшему
+        /// после отладки алгоритма составления,
+        /// можно будет протестировать различные варианты ранжирования мест для заполнения в списке -
+        /// при каком варианте быстрее будет составлять.
+        ///
+        /// можно кроме числа пересечений учесть колво слов такой длины в словаре,
+        /// длину маски (что лучше искать сначала длинные или короткие с большим колво пересечений)
+        /// 
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
         public static List<Place> GetPlaces(this CrossBoard board)
         {
-            var horizontals = board.GetAllOf(Orientation.Horizontal).ToList();
-            var verticals = board.GetAllOf(Orientation.Vertical).ToList();
-
-            var hCounter = horizontals.Count;
-            var vCounter = verticals.Count;
-            var coeff = (double) vCounter / hCounter + 0.01;
-
-            var places = new List<Place>();
-            while (hCounter + vCounter > 0)
-            {
-                places.Add(
-                    hCounter * coeff > vCounter 
-                        ? horizontals[^hCounter--] 
-                        : verticals[^vCounter--]);
-            }
-
-            return places;
+            var places = board.GetAllOf(Orientation.Horizontal).ToList();
+            places.AddRange(board.GetAllOf(Orientation.Vertical));
+            return places.OrderByDescending(p => p.CrossingCount).ToList();
         }
 
         public static IEnumerable<Place> GetAllOf(this CrossBoard board, Orientation orientation)
@@ -48,7 +39,7 @@ namespace CrossWordFiller
         {
             var lineNumber = lastFound?.LineNumber ?? 0;
             var startIndex = lastFound?.P.StartIdx + lastFound?.P.Length ?? 0;
-          
+
             while (true)
             {
                 var line = orientation == Orientation.Horizontal
@@ -63,7 +54,7 @@ namespace CrossWordFiller
                         Orientation = orientation,
                         LineNumber = lineNumber,
                         P = pl,
-                    };
+                    }.CountCrossings(board);
                 }
 
                 var limit = orientation == Orientation.Horizontal
@@ -78,47 +69,23 @@ namespace CrossWordFiller
             }
         }
 
-        public static string GetColumnAsString(this CrossBoard board, int number)
+        private static Place CountCrossings(this Place place, CrossBoard board)
         {
-            return string.Concat(board.Rows.Select(r=>r[number]));
-        }
-
-        public static PlaceInLine FindFirstPlaceForWord(this string str, int startIndex)
-        {
-            var open = -1;
-            for (int i = startIndex; i < str.Length; i++)
+            for (int i = place.P.StartIdx; i < place.P.StartIdx + place.P.Length; i++)
             {
-                if (open == -1 && str[i] != '1')
-                    open = i;
-
-                if (open != -1 && str[i] == '1')
+                if (place.Orientation == Orientation.Horizontal)
                 {
-                    if (i - open < 2)
-                    {
-                        open = -1;
-                        continue;
-                    }
-
-                    return new PlaceInLine()
-                    {
-                        StartIdx = open,
-                        Length = i - open,
-                    };
+                    if (board.Rows[place.LineNumber - 1][i] != '1' || board.Rows[place.LineNumber + 1][i] != '1')
+                        place.CrossingCount++;
+                }
+                else
+                {
+                    if (board.Rows[i][place.LineNumber - 1] != '1' || board.Rows[i][place.LineNumber + 1] != '1')
+                        place.CrossingCount++;
                 }
             }
 
-            return null;
-        }
-
-        public static int IndexOfNot(this string str, char ch, int startIndex)
-        {
-            for (int i = startIndex; i < str.Length; i++)
-            {
-                if (str[i] != ch)
-                    return i;
-            }
-
-            return -1;
+            return place;
         }
     }
 }

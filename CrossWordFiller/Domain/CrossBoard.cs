@@ -39,6 +39,11 @@ namespace CrossWordFiller
             File.WriteAllLines(filename, content);
         }
 
+        public string GetColumnAsString(int number)
+        {
+            return string.Concat(Rows.Select(r => r[number]));
+        }
+
         public string GetMask(Place place)
         {
             var line = place.Orientation == Orientation.Horizontal
@@ -47,7 +52,7 @@ namespace CrossWordFiller
             return line.Substring(place.P.StartIdx, place.P.Length);
         }
 
-        public void FillWord(WordOnBoard word)
+        public void FillWordIntoPlace(WordOnBoard word)
         {
             if (word.Place.Orientation == Orientation.Horizontal)
             {
