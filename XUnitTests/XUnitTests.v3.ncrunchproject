@@ -5,9 +5,6 @@
         <FixtureName>XUnitTests.CorpusTest</FixtureName>
       </FixtureTestSelector>
       <FixtureTestSelector>
-        <FixtureName>XUnitTests.BoardTest</FixtureName>
-      </FixtureTestSelector>
-      <FixtureTestSelector>
         <FixtureName>XUnitTests.BoardParserTest</FixtureName>
       </FixtureTestSelector>
       <NamedTestSelector>

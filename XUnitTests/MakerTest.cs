@@ -10,8 +10,7 @@ namespace XUnitTests
     {
         private const string Path = "C:\\VsGitProjects\\CrossWords\\CrossWordFiller\\Resources\\";
         private const string CorpusFileName = Path + "words.txt";
-        private const char CsvSeparator = ';';
-
+        private const string CsvSeparator = ";";
 
         [Fact]
         public void Fill2Words17Letters()

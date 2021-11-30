@@ -9,7 +9,7 @@ namespace CrossWordFiller
         private const string Path = "C:\\VsGitProjects\\CrossWords\\CrossWordFiller\\Resources\\";
         private const string CorpusFilename = Path + "words.txt";
         private const string BoardFilename = Path + "cross16.csv";
-        private const char CsvSeparator = ';';
+        private const string CsvSeparator = ";";
 
         static void Main()
         {

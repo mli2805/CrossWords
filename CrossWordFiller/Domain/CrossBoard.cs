@@ -9,20 +9,18 @@ namespace CrossWordFiller
     {
         public string[] Rows { get; set; }
 
-        public CrossBoard LoadFromCsv(string filename, char csvSeparator)
+        public CrossBoard LoadFromCsv(string filename, string csvSeparator)
         {
             var content = File.ReadAllLines(filename);
             Rows = new string[content.Length];
             for (int i = 0; i < content.Length; i++)
             {
-                var chars = content[i].Split(csvSeparator);
-                var row = string.Concat(chars);
-                Rows[i] = row;
+                Rows[i] = content[i].Replace(csvSeparator, "");
             }
             return this;
         }
 
-        public void SaveToCsv(string filename, char csvSeparator)
+        public void SaveToCsv(string filename, string csvSeparator)
         {
             var content = new List<string>();
             foreach (var row in Rows)
@@ -30,7 +28,7 @@ namespace CrossWordFiller
                 var sb = new StringBuilder();
                 for (int i = 0; i < row.Length - 1; i++)
                 {
-                    sb = sb.Append(row[i].ToString() + csvSeparator);
+                    sb = sb.Append(row[i] + csvSeparator);
                 }
 
                 sb = sb.Append(row.Last());
