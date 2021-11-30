@@ -38,6 +38,23 @@ namespace XUnitTests
             board.GetColumnAsString(5).Should().Be("10110110101010101101101");
         }
 
+        [Fact]
+        public void FillWord()
+        {
+            var board = new CrossBoard().LoadFromCsv(Path + "cross3.csv", CsvSeparator);
+            var places = board.GetPlaces();
+            board.GetMask(places[0]).Should().Be("00000");
+            board.GetMask(places[1]).Should().Be("00000");
+
+            var wordOnBoard = new WordOnBoard()
+            {
+                Place = places[0],
+                Word = new WordInDict() { Word = "рнонп" }
+            };
+            board.FillWordIntoPlace(wordOnBoard);
+            board.GetMask(places[0]).Should().Be("рнонп");
+            board.GetMask(places[8]).Should().Be("р000000");
+        }
 
     }
 }

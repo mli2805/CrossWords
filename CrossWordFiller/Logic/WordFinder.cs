@@ -10,62 +10,40 @@ namespace CrossWordFiller
 
             if (word.FoundInDictPos == -1)
             {
-                for (int i = word.StartSearchInDictPos; i < words.Count; i++)
-                {
-                    if (!usedWords.Contains(words[i]) && words[i].IsMatch(word.Mask))
-                    {
-                        word.FoundInDictPos = i;
-                        word.Word = words[i];
-                        return true;
-                    }
-                }
+                if (word.SearchBetween(words, usedWords, word.StartSearchInDictPos, words.Count))
+                    return true;
 
-                for (int i = 0; i < word.StartSearchInDictPos; i++)
-                {
-                    if (words[i].IsMatch(word.Mask))
-                    {
-                        word.FoundInDictPos = i;
-                        word.Word = words[i];
-                        return true;
-                    }
-                }
+                return word.SearchBetween(words, usedWords, 0, word.StartSearchInDictPos);
             }
+
             else if (word.StartSearchInDictPos <= word.FoundInDictPos)
             {
-                for (int i = word.FoundInDictPos+1; i < words.Count; i++)
-                {
-                    if (!usedWords.Contains(words[i]) && words[i].IsMatch(word.Mask))
-                    {
-                        word.FoundInDictPos = i;
-                        word.Word = words[i];
-                        return true;
-                    }
-                }
+                if (word.SearchBetween(words, usedWords, word.FoundInDictPos + 1, words.Count))
+                    return true;
 
-                for (int i = 0; i < word.StartSearchInDictPos; i++)
-                {
-                    if (words[i].IsMatch(word.Mask))
-                    {
-                        word.FoundInDictPos = i;
-                        word.Word = words[i];
-                        return true;
-                    }
-                }
+                return word.SearchBetween(words, usedWords, 0, word.StartSearchInDictPos);
             }
-            else // word.FoundInDictPos < word.StartSearchInDictPos
+
+            // word.FoundInDictPos < word.StartSearchInDictPos
+            else return word.SearchBetween(words, usedWords, word.FoundInDictPos + 1, word.StartSearchInDictPos);
+
+        }
+
+        private static bool SearchBetween(this WordInDict word, List<string> words, List<string> usedWords, int start, int finish)
+        {
+            for (int i = start; i < finish; i++)
             {
-                for (int i = word.FoundInDictPos+1; i < word.StartSearchInDictPos; i++)
+                if (!usedWords.Contains(words[i]) && words[i].IsMatch(word.Mask))
                 {
-                    if (words[i].IsMatch(word.Mask))
-                    {
-                        word.FoundInDictPos = i;
-                        word.Word = words[i];
-                        return true;
-                    }
+                    word.FoundInDictPos = i;
+                    word.Word = words[i];
+                    return true;
                 }
             }
-            
+
             return false;
         }
     }
+
+
 }

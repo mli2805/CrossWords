@@ -1,3 +1,33 @@
 ﻿<ProjectConfiguration>
-  <Settings />
+  <Settings>
+    <IgnoredTests>
+      <FixtureTestSelector>
+        <FixtureName>XUnitTests.CorpusTest</FixtureName>
+      </FixtureTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>XUnitTests.BoardTest</FixtureName>
+      </FixtureTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>XUnitTests.BoardParserTest</FixtureName>
+      </FixtureTestSelector>
+      <NamedTestSelector>
+        <TestName>XUnitTests.MakerTest.Fill2Words17Letters</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>XUnitTests.MakerTest.Fill4Words16Letters</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>XUnitTests.MakerTest.FillBoard</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>XUnitTests.MakerTest.FillBoard3</TestName>
+      </NamedTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>XUnitTests.StringTest</FixtureName>
+      </FixtureTestSelector>
+      <NamedTestSelector>
+        <TestName>XUnitTests.MakerTest.FillBoard4</TestName>
+      </NamedTestSelector>
+    </IgnoredTests>
+  </Settings>
 </ProjectConfiguration>

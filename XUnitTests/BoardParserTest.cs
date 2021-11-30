@@ -48,6 +48,17 @@ namespace XUnitTests
         }
 
         [Fact]
+        public void PlaceCompare()
+        {
+            var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
+            var horizontals = board.GetAllOf(Orientation.Horizontal).ToList();
+            var verticals = board.GetAllOf(Orientation.Vertical).ToList();
+            horizontals[0].ComparePlaces(verticals[0]).Should().Be(-1);
+            horizontals[1].ComparePlaces(verticals[0]).Should().Be(1);
+            horizontals[1].ComparePlaces(verticals[8]).Should().Be(0);
+        }
+
+        [Fact]
         public void GetAllOf()
         {
             var board = new CrossBoard().LoadFromCsv(FileName2, CsvSeparator);
@@ -62,6 +73,8 @@ namespace XUnitTests
         public void GetPlaces()
         {
             var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
+            board.GetAllOf(Orientation.Horizontal).Count().Should().Be(26);
+            board.GetAllOf(Orientation.Vertical).Count().Should().Be(24);
             var places = board.GetPlaces();
             places.Count.Should().Be(50);
             places[0].Orientation.Should().Be(Orientation.Vertical);
@@ -69,7 +82,7 @@ namespace XUnitTests
             places[1].CrossingCount.Should().Be(7);
             places[2].CrossingCount.Should().Be(7);
             places[3].CrossingCount.Should().Be(7);
-            places[49].Orientation.Should().Be(Orientation.Vertical);
+            places[49].Orientation.Should().Be(Orientation.Horizontal);
             places[49].CrossingCount.Should().Be(2);
             
             var board3 = new CrossBoard().LoadFromCsv(FileName2, CsvSeparator);
@@ -79,7 +92,7 @@ namespace XUnitTests
             places3[0].PlaceNumber.Should().Be(1);
             places3[0].CrossingCount.Should().Be(3);
             places3[20].Orientation.Should().Be(Orientation.Horizontal);
-            places3[20].PlaceNumber.Should().Be(9);
+            places3[20].PlaceNumber.Should().Be(15);
             places3[20].CrossingCount.Should().Be(1);
         }
     }

@@ -18,18 +18,67 @@ namespace CrossWordFiller
         /// <returns></returns>
         public static List<Place> GetPlaces(this CrossBoard board)
         {
-            var places = board.GetAllOf(Orientation.Horizontal).ToList();
-            places.AddRange(board.GetAllOf(Orientation.Vertical));
-            return places.OrderByDescending(p => p.CrossingCount).ToList();
+            var horizontals = board.GetAllOf(Orientation.Horizontal).ToList();
+            var verticals = board.GetAllOf(Orientation.Vertical)
+                .OrderBy(v1 => v1.P.StartIdx).ThenBy(v2 => v2.LineNumber).ToList();
+
+            return SetPlaceNumbers(horizontals, verticals).OrderByDescending(p => p.CrossingCount).ToList();
+        }
+
+        private static IEnumerable<Place> SetPlaceNumbers(List<Place> horizontals, List<Place> verticals)
+        {
+            var counter = 1;
+            var h = 0;
+            var v = 0;
+            while (h < horizontals.Count || v < verticals.Count)
+            {
+                var compareRes = h == horizontals.Count
+                    ? 1
+                    : v == verticals.Count
+                        ? -1
+                        : ComparePlaces(horizontals[h], verticals[v]);
+                switch (compareRes)
+                {
+                    case -1:
+                        horizontals[h].PlaceNumber = counter;
+                        yield return horizontals[h];
+                        h++;
+                        break;
+                    case 0:
+                        horizontals[h].PlaceNumber = counter;
+                        yield return horizontals[h];
+                        h++;
+                        verticals[v].PlaceNumber = counter;
+                        yield return verticals[v];
+                        v++;
+                        break;
+                    case 1:
+                        verticals[v].PlaceNumber = counter;
+                        yield return verticals[v];
+                        v++;
+                        break;
+                }
+
+                counter++;
+            }
+        }
+
+        public static int ComparePlaces(this Place horizontal, Place vertical)
+        {
+            if (horizontal.LineNumber < vertical.P.StartIdx) return -1;
+            if (horizontal.LineNumber > vertical.P.StartIdx) return 1;
+
+            if (horizontal.P.StartIdx < vertical.LineNumber) return -1;
+            if (horizontal.P.StartIdx > vertical.LineNumber) return 1;
+
+            return 0;
         }
 
         public static IEnumerable<Place> GetAllOf(this CrossBoard board, Orientation orientation)
         {
-            var counter = 1;
             var place = board.GetNextPlace(orientation, null);
             while (place != null)
             {
-                place.PlaceNumber = counter++;
                 yield return place;
                 place = board.GetNextPlace(orientation, place);
             }

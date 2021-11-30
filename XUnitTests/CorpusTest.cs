@@ -15,7 +15,9 @@ namespace XUnitTests
         {
             var words = new Corpus().LoadFromTxt(FileName);
             words.WLists[2].Count.Should().Be(22);
+            words.WLists[3].Count.Should().Be(266);
             words.WLists[6].Count.Should().Be(1653);
+            words.WLists[9].Count.Should().Be(855);
             words.WLists[13].Count.Should().Be(88);
             words.WLists[15].Count.Should().Be(14);
             words.WLists[16].Count.Should().Be(11);
