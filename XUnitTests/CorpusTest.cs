@@ -7,7 +7,7 @@ namespace XUnitTests
 {
     public class CorpusTest
     {
-        private const string Path = "C:\\VsGitProjects\\CrossWords\\CrossWordFiller\\Resources\\";
+        private const string Path = "C:\\VsGitProjects\\CrossWords\\Data\\";
         private const string FileName = Path + "words.txt";
 
         [Fact]

@@ -7,7 +7,7 @@ namespace XUnitTests
 {
     public class BoardParserTest
     {
-        private const string Path = "C:\\VsGitProjects\\CrossWords\\CrossWordFiller\\Resources\\";
+        private const string Path = "C:\\VsGitProjects\\CrossWords\\Data\\";
         private const string FileName1 = Path + "cross2_4.csv";
         private const string FileName2 = Path + "cross3.csv";
         private const string CsvSeparator = ";";

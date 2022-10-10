@@ -6,6 +6,8 @@ namespace CrossWordFiller
     public static class BoardParser
     {
         /// <summary>
+        /// 
+        /// 
         /// после отладки алгоритма составления,
         /// можно будет протестировать различные варианты ранжирования мест для заполнения в списке -
         /// при каком варианте быстрее будет составлять.
@@ -14,7 +16,7 @@ namespace CrossWordFiller
         /// длину маски (что лучше искать сначала длинные или короткие с большим колво пересечений)
         /// 
         /// </summary>
-        /// <param name="board"></param>
+        /// <param name="board"> массив 0/1, где 0 - место для буквы, 1 - фон</param>
         /// <returns></returns>
         public static List<Place> GetPlaces(this CrossBoard board)
         {

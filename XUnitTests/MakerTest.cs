@@ -8,7 +8,7 @@ namespace XUnitTests
 {
     public class MakerTest
     {
-        private const string Path = "C:\\VsGitProjects\\CrossWords\\CrossWordFiller\\Resources\\";
+        private const string Path = "C:\\VsGitProjects\\CrossWords\\Data\\";
         private const string CorpusFileName = Path + "words.txt";
         private const string CsvSeparator = ";";
 
