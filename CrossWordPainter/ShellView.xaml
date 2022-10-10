@@ -4,8 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="ShellView" WindowState="Maximized">
+    <DockPanel>
+        <GroupBox DockPanel.Dock="Left" Width="300">
+            <DockPanel >
+                <Button DockPanel.Dock="Bottom" Name="Close" IsCancel="True" Height="22" Width="120" Margin="0, 30">Закрыть</Button>
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBox Name="FileNameTextBlock" Text="{Binding SelectedFile}" IsReadOnly="True"
+                             Height="22" Width="280" Margin="0, 20, 0, 10" TextChanged="TextBox_TextChanged"/>
+                    <Button Name="SelectFile" Content="Выбрать файл" Height="22" Width="120" Margin="0" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </DockPanel>
+        </GroupBox>
+
+        <GroupBox>
+            <StackPanel Name="LeftPanel" Background="Gray" Margin="0, 5,0,0">
+
+            </StackPanel>
+        </GroupBox>
+      
+    </DockPanel>
 </Window>

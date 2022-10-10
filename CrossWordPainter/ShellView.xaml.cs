@@ -14,16 +14,15 @@ namespace CrossWordPainter
         {
             InitializeComponent();
 
-            ShowCrossBoard();
+            if (!string.IsNullOrEmpty(FileNameTextBlock.Text))
+                ShowCrossBoard(FileNameTextBlock.Text);
         }
 
-        private void ShowCrossBoard()
+        private void ShowCrossBoard(string filename)
         {
-            var filename = @"c:\temp\cross5_3res.csv";
             char[][] arr = LoadFromCsv(filename, ";");
 
             var canvas = new Canvas();
-            canvas.Background = Brushes.AliceBlue;
             var rectSize = 32;
             var horShift = 12;
             var vertShift = 10;
@@ -36,7 +35,7 @@ namespace CrossWordPainter
                 var line = arr[i];
                 for (int j = 0; j < line.Length; j++)
                 {
-                    if (line[j] != '1') 
+                    if (line[j] != '1')
                     {
                         var rect = CreateRect(rectSize);
                         canvas.Children.Add(rect);
@@ -46,13 +45,13 @@ namespace CrossWordPainter
                         {
                             var t = new TextBlock();
                             t.Text = line[j].ToString();
-                            t.FontSize = 13 ;
+                            t.FontSize = 13;
                             canvas.Children.Add(t);
                             Canvas.SetLeft(t, left + i * (rectSize + space) + horShift);
                             Canvas.SetTop(t, top + j * (rectSize + space) + vertShift);
                         }
                     }
-                   
+
                 }
 
             }
@@ -64,8 +63,9 @@ namespace CrossWordPainter
             Canvas.SetLeft(t1, left + 1 * (rectSize + space) + 1);
             Canvas.SetTop(t1, top + 1 * (rectSize + space) + 1);
 
-            this.Content = canvas;
+            this.LeftPanel.Children.Add(canvas);
 
+            // this.Content = canvas;
         }
 
         private Rectangle CreateRect(int size)
@@ -97,5 +97,10 @@ namespace CrossWordPainter
             return result;
         }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(FileNameTextBlock.Text))
+                ShowCrossBoard(FileNameTextBlock.Text);
+        }
     }
 }
