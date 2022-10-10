@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace CrossWordFiller
@@ -12,21 +11,29 @@ namespace CrossWordFiller
         private const string ListFilename = Path + "cross5_2.lst";
         private const string CsvSeparator = ";";
 
+        private const string JsonFile = "c:\\VsGitProjects\\CrossWords\\Dictionaries\\harrix.dev\\russian_nouns_with_definition.json";
+
         static void Main()
         {
-            Console.WriteLine("Hello World!");
-
             var board = new CrossBoard().LoadFromCsv(BoardFilename, CsvSeparator);
-            var corpus = new Corpus().LoadFromTxt(CorpusFilename);
-            var log = new List<string>();
-            var r = board.Fill(corpus, log);
+
+            bool oldCorpus = false;
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            var corpus = oldCorpus
+                ? new Corpus().LoadFromTxt(CorpusFilename)
+                : new Corpus().LoadHarrixEfremovaJson(JsonFile);
+
+            var r = board.Fill(corpus, null);
 
             var content = new List<string>();
-            foreach (var w in r)
+            foreach (var w in r.Words)
             {
                 content.Add($"{w.Place.PlaceNumber} {w.Place.Orientation} {w.Word.Word}");
             }
             File.WriteAllLines(ListFilename, content);
+
+
+
         }
     }
 }

@@ -1,40 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
 namespace CrossWordFiller
 {
+    public class ComposerResult
+    {
+        public List<WordOnBoard> Words;
+        public bool IsCanceled;
+        public bool IsFailed;
+    }
+
     public static class Maker
     {
-        public static List<WordOnBoard> Fill(this CrossBoard board, Corpus corpus, List<string> log)
+        public static ComposerResult Fill(this CrossBoard board, Corpus corpus, BackgroundWorker worker)
         {
-            var result = board.GetPlaces().InitializeWordsOnBoard(corpus);
+            var result = new ComposerResult() {
+                Words = board.GetPlaces().InitializeWordsOnBoard(corpus),
+            };
 
-            var file = File.CreateText(@"c:\temp\log.txt");
-            file.AutoFlush = true;
-            file.WriteLine("Start");
+            var logFile = File.CreateText(@"c:\temp\log.txt");
+            logFile.AutoFlush = true;
+            logFile.WriteLine("Start");
 
             var currentStep = 0;
             while (currentStep < board.GetPlaces().Count)
             {
-                var wordInDict = result[currentStep].Word;
-                wordInDict.Mask = board.GetMask(board.GetPlaces()[currentStep]);
-                file.LogSearch(currentStep, wordInDict);
-
-                if (wordInDict.Search(corpus, result.Select(w => w.Word.Word).ToList()))
+                if (worker.CancellationPending)
                 {
-                    board.FillWordIntoPlace(result[currentStep]);
-                    file.LogFilled(currentStep, wordInDict);
+                    result.IsCanceled = true;
+                    break; 
+                }
+
+                var wordInDict = result.Words[currentStep].Word;
+                wordInDict.Mask = board.GetMask(board.GetPlaces()[currentStep]);
+                logFile.LogSearch(currentStep, wordInDict);
+
+                if (wordInDict.Search(corpus, result.Words.Select(w => w.Word.Word).ToList()))
+                {
+                    board.FillWordIntoPlace(result.Words[currentStep]);
+                    logFile.LogFilled(currentStep, wordInDict);
                     currentStep++;
                 }
                 else
                 {
-                    file.LogCantFind(currentStep, wordInDict);
-                    var problemMask = result[currentStep].Word.Mask;
+                    logFile.LogCantFind(currentStep, wordInDict);
+                    var problemMask = result.Words[currentStep].Word.Mask;
                     if (problemMask.IndexOfNot('0', 0) == -1)
                     {
-                        log.Add("Impossible to complete !!!");
+                        result.IsFailed = true;
                         break;
                     }
 
@@ -42,21 +58,22 @@ namespace CrossWordFiller
 
                     while (board.GetMask(problemPlace) == problemMask)
                     {
-                        result[currentStep].Word.FoundInDictPos = -1;
+                        result.Words[currentStep].Word.FoundInDictPos = -1;
                         currentStep--;
 
                         if (currentStep == -1)
                             break;
 
-                        result[currentStep].Word.Word = result[currentStep].Word.Mask;
-                        board.FillWordIntoPlace(result[currentStep]);
+                        result.Words[currentStep].Word.Word = result.Words[currentStep].Word.Mask;
+                        board.FillWordIntoPlace(result.Words[currentStep]);
                     }
                 }
+
+                worker.ReportProgress(currentStep);
             }
 
-            file.Close();
-
-            return currentStep == board.GetPlaces().Count ? result : null;
+            logFile.Close();
+            return result;
         }
 
         private static List<WordOnBoard> InitializeWordsOnBoard(this List<Place> places, Corpus corpus)

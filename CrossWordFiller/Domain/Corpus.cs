@@ -10,16 +10,27 @@ namespace CrossWordFiller
 
         public Corpus LoadFromTxt(string filename)
         {
+            var content = File.ReadAllLines(filename);
+            Calibrate(content.ToList());
+            return this;
+        }
+
+        public Corpus LoadHarrixEfremovaJson(string jsonFile)
+        {
+            var jsonString = File.ReadAllText(jsonFile);
+            var words = HarrixEfremovaDictionary.FromJson(jsonString).Keys.ToList();
+            Calibrate(words);
+            return this;
+        }
+
+        private void Calibrate(List<string> content)
+        {
             const int maxLength = 25;
             WLists = new List<string>[maxLength + 1];
-
-            var content = File.ReadAllLines(filename);
             for (int i = 2; i <= maxLength; i++)
             {
                 WLists[i] = content.Where(w => w.Length == i).ToList();
             }
-
-            return this;
         }
     }
 }
