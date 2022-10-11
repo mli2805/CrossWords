@@ -22,7 +22,7 @@ namespace CrossWord
         {
             var horizontals = board.GetAllOf(Orientation.Horizontal).ToList();
             var verticals = board.GetAllOf(Orientation.Vertical)
-                .OrderBy(v1 => v1.P.StartIdx).ThenBy(v2 => v2.LineNumber).ToList();
+                .OrderBy(v1 => v1.LineNumber).ThenBy(v2 => v2.P.StartIdx).ToList();
 
             return SetPlaceNumbers(horizontals, verticals).OrderByDescending(p => p.CrossingCount).ToList();
         }
@@ -65,52 +65,59 @@ namespace CrossWord
             }
         }
 
+        /// <summary>
+        /// сравнивает горизонтальное и вертикальное место - не начинаются ли они из одной клетки
+        /// для назначения одного и того же номера
+        /// </summary>
+        /// <param name="horizontal"></param>
+        /// <param name="vertical"></param>
+        /// <returns></returns>
         public static int ComparePlaces(this Place horizontal, Place vertical)
         {
-            if (horizontal.LineNumber < vertical.P.StartIdx) return -1;
-            if (horizontal.LineNumber > vertical.P.StartIdx) return 1;
+            if (horizontal.LineNumber < vertical.LineNumber) return -1;
+            if (horizontal.LineNumber > vertical.LineNumber) return 1;
 
-            if (horizontal.P.StartIdx < vertical.LineNumber) return -1;
-            if (horizontal.P.StartIdx > vertical.LineNumber) return 1;
+            if (horizontal.P.StartIdx < vertical.P.StartIdx) return -1;
+            if (horizontal.P.StartIdx > vertical.P.StartIdx) return 1;
 
             return 0;
         }
 
         public static IEnumerable<Place> GetAllOf(this CrossBoard board, Orientation orientation)
         {
-            var place = board.GetNextPlace(orientation, null);
+            var rows = orientation == Orientation.Horizontal
+                ? board.Rows
+                : board.RotateRows();
+
+            var place = rows.GetNextPlace( null);
             while (place != null)
             {
-                yield return place;
-                place = board.GetNextPlace(orientation, place);
+                yield return orientation == Orientation.Horizontal ? place : place.GetRotated();
+                place = rows.GetNextPlace(place);
             }
         }
 
-        public static Place? GetNextPlace(this CrossBoard board, Orientation orientation, Place? lastFound)
+        public static Place? GetNextPlace(this string[] rows, Place? lastFound)
         {
             var lineNumber = lastFound?.LineNumber ?? 0;
             var startIndex = lastFound?.P.StartIdx + lastFound?.P.Length ?? 0;
 
             while (true)
             {
-                var line = orientation == Orientation.Horizontal
-                    ? board.Rows[lineNumber]
-                    : board.GetColumnAsString(lineNumber);
+                var line = rows[lineNumber];
 
                 var pl = line.FindFirstPlaceForWord(startIndex);
                 if (pl != null)
                 {
                     return new Place()
                     {
-                        Orientation = orientation,
+                        Orientation = Orientation.Horizontal,
                         LineNumber = lineNumber,
                         P = pl,
-                    }.CountCrossings(board);
+                    }.CountCrossings(rows);
                 }
 
-                var limit = orientation == Orientation.Horizontal
-                    ? board.Rows.Length - 1
-                    : board.Rows[0].Length - 1;
+                var limit = rows.Length - 1;
 
                 if (lineNumber == limit)
                     return null;
@@ -120,18 +127,18 @@ namespace CrossWord
             }
         }
 
-        private static Place CountCrossings(this Place place, CrossBoard board)
+        private static Place CountCrossings(this Place place, string[] rows)
         {
             for (int i = place.P.StartIdx; i < place.P.StartIdx + place.P.Length; i++)
             {
                 if (place.Orientation == Orientation.Horizontal)
                 {
-                    if (board.Rows[place.LineNumber - 1][i] != '1' || board.Rows[place.LineNumber + 1][i] != '1')
+                    if (rows[place.LineNumber - 1][i] != '1' || rows[place.LineNumber + 1][i] != '1')
                         place.CrossingCount++;
                 }
                 else
                 {
-                    if (board.Rows[i][place.LineNumber - 1] != '1' || board.Rows[i][place.LineNumber + 1] != '1')
+                    if (rows[i][place.LineNumber - 1] != '1' || rows[i][place.LineNumber + 1] != '1')
                         place.CrossingCount++;
                 }
             }

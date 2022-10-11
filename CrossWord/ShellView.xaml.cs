@@ -28,7 +28,11 @@ namespace CrossWord
 
         private void ShowCrossBoard(string filename)
         {
-            string[] rows = new CrossBoard().LoadFromCsv(filename, ";").Rows;
+            this.LeftPanel.Children.Clear();
+
+            var crossBoard = new CrossBoard().LoadFromCsv(filename, ";");
+            string[] rows = crossBoard.Rows;
+            var places = crossBoard.GetPlaces();
 
             var canvas = new Canvas();
             for (int i = 0; i < rows.Length; i++)
@@ -44,18 +48,19 @@ namespace CrossWord
                 }
             }
 
-            DrawNumber(canvas, 14, 1, 1);
+            foreach (var place in places)
+            {
+                DrawNumber(canvas, place.PlaceNumber, place.P.StartIdx, place.LineNumber);
+            }
 
             this.LeftPanel.Children.Add(canvas);
-
-            // this.Content = canvas;
         }
 
         private static void DrawNumber(Canvas canvas, int number, int i, int j)
         {
             var t1 = new TextBlock();
             t1.Text = number.ToString();
-            t1.FontSize = 9;
+            t1.FontSize = 12;
             canvas.Children.Add(t1);
             Canvas.SetLeft(t1, BoardLeft + i * (RectSize + Space) + 1);
             Canvas.SetTop(t1, BoardTop + j * (RectSize + Space) + 1);

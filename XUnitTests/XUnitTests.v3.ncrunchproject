@@ -7,6 +7,12 @@
       <NamedTestSelector>
         <TestName>XUnitTests.MakerTest.FillBoard4</TestName>
       </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>XUnitTests.ComposerTest.FillBoard4</TestName>
+      </NamedTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>XUnitTests.ComposerTest</FixtureName>
+      </FixtureTestSelector>
     </IgnoredTests>
   </Settings>
 </ProjectConfiguration>

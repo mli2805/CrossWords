@@ -43,6 +43,11 @@ namespace CrossWord
             return string.Concat(Rows.Select(r => r[number]));
         }
 
+        public string[] RotateRows()
+        {
+            return Enumerable.Range(0, Rows[0].Length).Select(i => string.Concat(Rows.Select(r => r[i]))).ToArray();
+        }
+
         public string GetMask(Place place)
         {
             var line = place.Orientation == Orientation.Horizontal
