@@ -1,4 +1,4 @@
-﻿namespace CrossWordPainter
+﻿namespace CrossWord
 {
     /// <summary>
     /// Interaction logic for App.xaml

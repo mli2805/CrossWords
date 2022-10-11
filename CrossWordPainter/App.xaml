@@ -1,13 +1,12 @@
-﻿<Application x:Class="CrossWordPainter.App"
+﻿<Application x:Class="CrossWord.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CrossWordPainter"
-             >
+             xmlns:crossWord="clr-namespace:CrossWord">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <local:AppBootstrapper x:Key="Bootstrapper" />
+                    <crossWord:AppBootstrapper x:Key="Bootstrapper" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

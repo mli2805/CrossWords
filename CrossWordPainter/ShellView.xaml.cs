@@ -1,9 +1,8 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using CrossWordFiller;
 
-namespace CrossWordPainter
+namespace CrossWord
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml

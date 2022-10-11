@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
 
-namespace CrossWordPainter.Utils
+namespace CrossWord
 {
     public class KeyTrigger : TriggerBase<UIElement>
     {

@@ -4,15 +4,13 @@ using System.Windows;
 using System.Windows.Input;
 using Autofac;
 using Caliburn.Micro;
-using CrossWordPainter.Utils;
 using FootballWpf;
-using KeyTrigger = Microsoft.Xaml.Behaviors.Input.KeyTrigger;
 
 #pragma warning disable CS8600
 #pragma warning disable CS8618
 #pragma warning disable CS8603
 
-namespace CrossWordPainter
+namespace CrossWord
 {
     public class AppBootstrapper : BootstrapperBase
     {
@@ -43,12 +41,13 @@ namespace CrossWordPainter
                 {
                     case "Key":
                         var key = (Key)Enum.Parse(typeof(Key), splits[1], true);
-                        return new KeyTrigger { Key = key };
+                        return new Microsoft.Xaml.Behaviors.Input.KeyTrigger { Key = key };
 
                     case "Gesture":
-                        var mkg = (MultiKeyGesture)(new MultiKeyGestureConverter()).ConvertFrom(splits[1]);
-                        if (mkg == null) return null;
-                        return new KeyTrigger { Modifiers = mkg.KeySequences[0].Modifiers, Key = mkg.KeySequences[0].Keys[0] };
+                        var o = new MultiKeyGestureConverter().ConvertFrom(splits[1]);
+                        if (o == null) return null;
+                        var mkg = (MultiKeyGesture)o;
+                        return new Microsoft.Xaml.Behaviors.Input.KeyTrigger { Modifiers = mkg.KeySequences[0].Modifiers, Key = mkg.KeySequences[0].Keys[0] };
                 }
 
                 return defaultCreateTrigger(target, triggerText);

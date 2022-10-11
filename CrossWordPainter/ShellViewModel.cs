@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
 using Caliburn.Micro;
-using CrossWordFiller;
 using Microsoft.Win32;
 
-namespace CrossWordPainter
+namespace CrossWord
 {
     public class ShellViewModel : Screen, IShell
     {
@@ -47,7 +46,7 @@ namespace CrossWordPainter
             }
         }
 
-        private CrossBoard _board = new();
+        private CrossBoard _board = new CrossBoard();
         private Corpus? _corpus;
         private BackgroundWorker? _bw;
         public void Compose()

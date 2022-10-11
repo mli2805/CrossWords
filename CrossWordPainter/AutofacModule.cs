@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Caliburn.Micro;
 
-namespace CrossWordPainter
+namespace CrossWord
 {
     public class AutofacModule : Module
     {

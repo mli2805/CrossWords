@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CrossWordFiller;
+using CrossWord;
 using FluentAssertions;
 using Xunit;
 

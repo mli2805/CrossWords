@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Windows.Input;
-using CrossWordPainter.Utils;
+using CrossWord;
 
 #pragma warning disable CS8765
 

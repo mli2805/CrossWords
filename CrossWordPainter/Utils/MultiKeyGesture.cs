@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Input;
 using FootballWpf;
 
-namespace CrossWordPainter.Utils
+namespace CrossWord
 {
     /// <summary>
     ///   Class used to define a multi-key gesture.

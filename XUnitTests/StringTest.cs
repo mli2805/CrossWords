@@ -1,4 +1,4 @@
-﻿using CrossWordFiller;
+﻿using CrossWord;
 using FluentAssertions;
 using Xunit;
 
@@ -22,7 +22,9 @@ namespace XUnitTests
             var str = "11111111111111111111111111";
             Assert.Null(str.FindFirstPlaceForWord(0));
             var str2 = "110110АБ01111111111111111";
-            str2.FindFirstPlaceForWord(0).Length.Should().Be(4);
+            var pl = str2.FindFirstPlaceForWord(0);
+            Assert.NotNull(pl);
+            pl.Length.Should().Be(4);
             str2.FindFirstPlaceForWord(13).Should().BeNull();
         }
 

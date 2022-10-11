@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Input;
 
-namespace CrossWordPainter.Utils
+namespace CrossWord
 {
     /// <summary>
     ///   Class used to store multi-key gesture data.

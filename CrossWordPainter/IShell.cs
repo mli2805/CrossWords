@@ -1,4 +1,4 @@
-﻿namespace CrossWordPainter
+﻿namespace CrossWord
 {
     public interface IShell
     {
