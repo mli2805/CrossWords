@@ -36,7 +36,7 @@ namespace CrossWord
 
                 var wordInDict = result.Words[currentStep].Word;
                 wordInDict.Mask = board.GetMask(board.GetPlaces()[currentStep]);
-                logFile.LogSearch(currentStep, wordInDict);
+                logFile.LogSearch(currentStep, result.Words[currentStep]);
 
                 if (wordInDict.Search(corpus, result.Words.Select(w => w.Word.Word).ToList()))
                 {
@@ -96,9 +96,11 @@ namespace CrossWord
             return result;
         }
 
-        private static void LogSearch(this StreamWriter file, int currentStep, WordInDict wordInDict)
+        private static void LogSearch(this StreamWriter file, int currentStep, WordOnBoard wordOnBoard)
         {
-            file.WriteLine($"Step {currentStep}: Search: startIdx {wordInDict.StartSearchInDictPos}, previous found pos {wordInDict.FoundInDictPos}, mask {wordInDict.Mask}");
+            var o = wordOnBoard.Place.Orientation == Orientation.Horizontal ? "H" : "V";
+            var word = $"Search for word {o}{wordOnBoard.Place.PlaceNumber}";
+            file.WriteLine($"Step {currentStep}: {word}: startIdx {wordOnBoard.Word.StartSearchInDictPos}, previous found pos {wordOnBoard.Word.FoundInDictPos}, mask {wordOnBoard.Word.Mask}");
         }
 
         private static void LogFilled(this StreamWriter file, int currentStep, WordInDict wordInDict)

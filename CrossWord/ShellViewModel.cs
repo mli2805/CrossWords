@@ -7,8 +7,8 @@ namespace CrossWord
     public class ShellViewModel : Screen, IShell
     {
         private const string Path = "C:\\VsGitProjects\\CrossWords\\Data\\";
-        // private const string CorpusFilename = Path + "words.txt";
-        private const string JsonFile = "c:\\VsGitProjects\\CrossWords\\Dictionaries\\harrix.dev\\russian_nouns_with_definition.json";
+        private const string CorpusFilename = Path + "words.txt";
+        // private const string JsonFile = "c:\\VsGitProjects\\CrossWords\\Dictionaries\\harrix.dev\\russian_nouns_with_definition.json";
 
         private string _selectedFile = "";
 
@@ -53,7 +53,8 @@ namespace CrossWord
         {
             Message = "";
             _board = new CrossBoard().LoadFromCsv(SelectedFile, ";");
-            _corpus = new Corpus().LoadHarrixEfremovaJson(JsonFile);
+            // _corpus = new Corpus().LoadHarrixEfremovaJson(JsonFile);
+            _corpus = new Corpus().LoadFromTxt(CorpusFilename);
 
             _bw.WorkerReportsProgress = true;
             _bw.WorkerSupportsCancellation = true;
