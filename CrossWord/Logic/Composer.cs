@@ -15,7 +15,7 @@ namespace CrossWord
 
     public static class Composer
     {
-        public static ComposerResult Fill(this CrossBoard board, Corpus corpus, BackgroundWorker worker)
+        public static ComposerResult Fill(this CrossBoard board, Corpus corpus, BackgroundWorker? worker)
         {
             var result = new ComposerResult() {
                 Words = board.GetPlaces().InitializeWordsOnBoard(corpus),
@@ -28,7 +28,7 @@ namespace CrossWord
             var currentStep = 0;
             while (currentStep < board.GetPlaces().Count)
             {
-                if (worker.CancellationPending)
+                if (worker != null && worker.CancellationPending)
                 {
                     result.IsCanceled = true;
                     break; 
@@ -69,7 +69,7 @@ namespace CrossWord
                     }
                 }
 
-                worker.ReportProgress(currentStep);
+                worker?.ReportProgress(currentStep);
             }
 
             logFile.Close();

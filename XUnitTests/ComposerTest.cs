@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using CrossWord;
+﻿using CrossWord;
 using FluentAssertions;
 using Xunit;
 
@@ -16,8 +15,8 @@ namespace XUnitTests
         {
             var board = new CrossBoard().LoadFromCsv(Path + "cross2po17.csv", CsvSeparator);
             var corpus = new Corpus().LoadFromTxt(CorpusFileName);
-            var result = board.Fill(corpus, new BackgroundWorker());
-            result.Should().BeNull();
+            var result = board.Fill(corpus, null);
+            result.IsFailed.Should().BeTrue();
         }
 
         [Fact]
@@ -25,9 +24,9 @@ namespace XUnitTests
         {
             var board = new CrossBoard().LoadFromCsv(Path + "cross16.csv", CsvSeparator);
             var corpus = new Corpus().LoadFromTxt(CorpusFileName);
-            var result = board.Fill(corpus, new BackgroundWorker());
+            var result = board.Fill(corpus, null);
             board.SaveToCsv(Path + "cross16res.csv", CsvSeparator);
-            result.Should().BeNull();
+            result.IsFailed.Should().BeTrue();
         }
 
         [Fact]
@@ -35,8 +34,8 @@ namespace XUnitTests
         {
             var board = new CrossBoard().LoadFromCsv(Path + "cross2_5.csv", CsvSeparator);
             var corpus = new Corpus().LoadFromTxt(CorpusFileName);
-            var result = board.Fill(corpus, new BackgroundWorker());
-            result.Should().BeNull();
+            var result = board.Fill(corpus, null);
+            result.IsFailed.Should().BeTrue();
         }
 
         [Fact]
@@ -44,8 +43,8 @@ namespace XUnitTests
         {
             var board = new CrossBoard().LoadFromCsv(Path + "cross3.csv", CsvSeparator);
             var corpus = new Corpus().LoadFromTxt(CorpusFileName);
-            var result = board.Fill(corpus, new BackgroundWorker());
-            result.Should().NotBeNull();
+            var result = board.Fill(corpus, null);
+            result.IsFailed.Should().BeFalse();
         }
 
         [Fact]
@@ -54,8 +53,8 @@ namespace XUnitTests
             var board = new CrossBoard().LoadFromCsv(Path + "cross5_3.csv", CsvSeparator);
             board.GetPlaces().Count.Should().Be(76);
             var corpus = new Corpus().LoadFromTxt(CorpusFileName);
-            var result = board.Fill(corpus, new BackgroundWorker());
-            result.Should().NotBeNull();
+            var result = board.Fill(corpus, null);
+            result.IsFailed.Should().BeFalse();
 
             board.SaveToCsv(Path + "cross5_3res.csv", CsvSeparator);
         }
