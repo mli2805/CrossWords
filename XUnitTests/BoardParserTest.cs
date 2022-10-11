@@ -52,7 +52,7 @@ namespace XUnitTests
         public void GetFirstVerticalPlace()
         {
             var board = new CrossBoard().LoadFromCsv(FileName2, CsvSeparator);
-            var rows = board.RotateRows();
+            var rows = board.Rows.RotateRows();
             var place = rows.GetNextPlace(null);
             Assert.NotNull(place);
             place.LineNumber.Should().Be(2);

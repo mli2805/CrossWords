@@ -38,21 +38,11 @@ namespace CrossWord
             File.WriteAllLines(filename, content);
         }
 
-        public string GetColumnAsString(int number)
-        {
-            return string.Concat(Rows.Select(r => r[number]));
-        }
-
-        public string[] RotateRows()
-        {
-            return Enumerable.Range(0, Rows[0].Length).Select(i => string.Concat(Rows.Select(r => r[i]))).ToArray();
-        }
-
         public string GetMask(Place place)
         {
             var line = place.Orientation == Orientation.Horizontal
                 ? Rows[place.LineNumber]
-                : this.GetColumnAsString(place.P.StartIdx);
+                : Rows.GetColumnAsString(place.P.StartIdx);
             return place.Orientation == Orientation.Horizontal 
                 ? line.Substring(place.P.StartIdx, place.P.Length)
                 : line.Substring(place.LineNumber, place.P.Length);

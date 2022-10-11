@@ -35,7 +35,7 @@ namespace XUnitTests
         public void GetColumnAsString()
         {
             var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
-            board.GetColumnAsString(5).Should().Be("10110110101010101101101");
+            board.Rows.GetColumnAsString(5).Should().Be("10110110101010101101101");
         }
 
         [Fact]

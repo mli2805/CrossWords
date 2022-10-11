@@ -87,7 +87,7 @@ namespace CrossWord
         {
             var rows = orientation == Orientation.Horizontal
                 ? board.Rows
-                : board.RotateRows();
+                : board.Rows.RotateRows();
 
             var place = rows.GetNextPlace( null);
             while (place != null)
