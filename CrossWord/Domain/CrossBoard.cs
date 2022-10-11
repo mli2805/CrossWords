@@ -52,8 +52,10 @@ namespace CrossWord
         {
             var line = place.Orientation == Orientation.Horizontal
                 ? Rows[place.LineNumber]
-                : this.GetColumnAsString(place.LineNumber);
-            return line.Substring(place.P.StartIdx, place.P.Length);
+                : this.GetColumnAsString(place.P.StartIdx);
+            return place.Orientation == Orientation.Horizontal 
+                ? line.Substring(place.P.StartIdx, place.P.Length)
+                : line.Substring(place.LineNumber, place.P.Length);
         }
 
         public void FillWordIntoPlace(WordOnBoard word)
@@ -69,10 +71,10 @@ namespace CrossWord
             {
                 for (int i = 0; i < word.Word.Word.Length; i++)
                 {
-                    Rows[word.Place.P.StartIdx + i]
-                        = Rows[word.Place.P.StartIdx + i].Substring(0, word.Place.LineNumber)
+                    Rows[word.Place.LineNumber + i]
+                        = Rows[word.Place.LineNumber + i].Substring(0, word.Place.P.StartIdx)
                           + word.Word.Word[i]
-                          + Rows[word.Place.P.StartIdx + i].Substring(word.Place.LineNumber + 1);
+                          + Rows[word.Place.LineNumber + i].Substring(word.Place.P.StartIdx + 1);
                 }
             }
         }
