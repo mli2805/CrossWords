@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CrossWordPainter\CrossWord.csproj" />
+    <ProjectReference Include="..\CrossWord\CrossWord.csproj" />
   </ItemGroup>
 
 </Project>
