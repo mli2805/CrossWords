@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace CrossWord
 {
     public class Corpus
     {
-        public List<string>[] WLists { get; private set; }
+        public List<string>[] WLists { get; private set; } = Array.Empty<List<string>>();
 
         public Corpus LoadFromTxt(string filename)
         {
@@ -18,7 +19,7 @@ namespace CrossWord
         public Corpus LoadHarrixEfremovaJson(string jsonFile)
         {
             var jsonString = File.ReadAllText(jsonFile);
-            var words = HarrixEfremovaDictionary.FromJson(jsonString).Keys.ToList();
+            var words = HarrixEfremovaDictionary.FromJson(jsonString)?.Keys.ToList() ?? new List<string>();
             Calibrate(words);
             return this;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ namespace CrossWord
 {
     public class CrossBoard
     {
-        public string[] Rows { get; set; }
+        public string[] Rows { get; set; } = Array.Empty<string>();
 
         public CrossBoard LoadFromCsv(string filename, string csvSeparator)
         {

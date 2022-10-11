@@ -5,7 +5,7 @@
     {
         public Orientation Orientation { get; set; }
         public int LineNumber { get; set; }
-        public PlaceInLine P { get; set; }
+        public PlaceInLine P { get; set; } = new PlaceInLine();
         public int CrossingCount { get; set; }
         public int PlaceNumber { get; set; }
      }

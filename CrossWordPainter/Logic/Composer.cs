@@ -8,12 +8,12 @@ namespace CrossWord
 {
     public class ComposerResult
     {
-        public List<WordOnBoard> Words;
+        public List<WordOnBoard>? Words;
         public bool IsCanceled;
         public bool IsFailed;
     }
 
-    public static class Maker
+    public static class Composer
     {
         public static ComposerResult Fill(this CrossBoard board, Corpus corpus, BackgroundWorker worker)
         {

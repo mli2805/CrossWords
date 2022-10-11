@@ -13,9 +13,9 @@ namespace CrossWord
     public class HarrixEfremovaDictionary
     {
         [JsonProperty("definition")]
-        public string Definition { get; set; }
+        public string? Definition { get; set; }
 
-        public static Dictionary<string, HarrixEfremovaDictionary> FromJson(string json) 
+        public static Dictionary<string, HarrixEfremovaDictionary>? FromJson(string json) 
             => JsonConvert.DeserializeObject<Dictionary<string, HarrixEfremovaDictionary>>(json);
     }
 }

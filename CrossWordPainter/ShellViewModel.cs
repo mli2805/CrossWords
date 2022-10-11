@@ -47,16 +47,14 @@ namespace CrossWord
         }
 
         private CrossBoard _board = new CrossBoard();
-        private Corpus? _corpus;
-        private BackgroundWorker? _bw;
+        private Corpus _corpus = new Corpus();
+        private BackgroundWorker _bw = new BackgroundWorker();
         public void Compose()
         {
             Message = "";
             _board = new CrossBoard().LoadFromCsv(SelectedFile, ";");
-            if (_board == null) return;
             _corpus = new Corpus().LoadHarrixEfremovaJson(JsonFile);
 
-            _bw = new BackgroundWorker();
             _bw.WorkerReportsProgress = true;
             _bw.WorkerSupportsCancellation = true;
             _bw.DoWork += Bw_DoWork;
@@ -68,7 +66,7 @@ namespace CrossWord
 
         public void Interrupt()
         {
-            _bw?.CancelAsync();
+            _bw.CancelAsync();
         }
 
         private void Bw_ProgressChanged(object? sender, ProgressChangedEventArgs e)

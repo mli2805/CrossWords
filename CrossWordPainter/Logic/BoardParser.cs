@@ -86,7 +86,7 @@ namespace CrossWord
             }
         }
 
-        public static Place? GetNextPlace(this CrossBoard board, Orientation orientation, Place lastFound)
+        public static Place? GetNextPlace(this CrossBoard board, Orientation orientation, Place? lastFound)
         {
             var lineNumber = lastFound?.LineNumber ?? 0;
             var startIndex = lastFound?.P.StartIdx + lastFound?.P.Length ?? 0;

@@ -17,6 +17,7 @@ namespace XUnitTests
         {
             var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
             var place = board.GetNextPlace(Orientation.Horizontal, null);
+            Assert.NotNull(place);
             place.LineNumber.Should().Be(1);
             place.P.StartIdx.Should().Be(1);
             place.P.Length.Should().Be(7);
@@ -28,6 +29,7 @@ namespace XUnitTests
         {
             var board = new CrossBoard().LoadFromCsv(FileName1, CsvSeparator);
             var place = board.GetNextPlace(Orientation.Vertical, null);
+            Assert.NotNull(place);
             place.LineNumber.Should().Be(2);
             place.P.StartIdx.Should().Be(1);
             place.P.Length.Should().Be(7);
