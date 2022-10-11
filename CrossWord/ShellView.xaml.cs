@@ -49,39 +49,37 @@ namespace CrossWord
             }
 
             foreach (var place in places)
-            {
-                DrawNumber(canvas, place.PlaceNumber, place.P.StartIdx, place.LineNumber);
-            }
+                DrawNumber(canvas, place.PlaceNumber, place.LineNumber, place.P.StartIdx);
 
             this.LeftPanel.Children.Add(canvas);
         }
 
-        private static void DrawNumber(Canvas canvas, int number, int i, int j)
+        private static void DrawNumber(Canvas canvas, int number, int row, int column)
         {
             var t1 = new TextBlock();
             t1.Text = number.ToString();
-            t1.FontSize = 12;
+            t1.FontSize = 10;
             canvas.Children.Add(t1);
-            Canvas.SetLeft(t1, BoardLeft + i * (RectSize + Space) + 1);
-            Canvas.SetTop(t1, BoardTop + j * (RectSize + Space) + 1);
+            Canvas.SetLeft(t1, BoardLeft + column * (RectSize + Space) + 2);
+            Canvas.SetTop(t1, BoardTop + row * (RectSize + Space) + 1);
         }
 
-        private static void DrawLetter(Canvas canvas, char letter, int i, int j)
+        private static void DrawLetter(Canvas canvas, char letter, int row, int column)
         {
             var t = new TextBlock();
-            t.Text = letter.ToString();
+            t.Text = letter.ToString().ToUpperInvariant();
             t.FontSize = 13;
             canvas.Children.Add(t);
-            Canvas.SetLeft(t, BoardLeft + i * (RectSize + Space) + HorShift);
-            Canvas.SetTop(t, BoardTop + j * (RectSize + Space) + VertShift);
+            Canvas.SetLeft(t, BoardLeft + column * (RectSize + Space) + HorShift);
+            Canvas.SetTop(t, BoardTop + row * (RectSize + Space) + VertShift);
         }
 
-        private void DrawRect(Canvas canvas, int i, int j)
+        private void DrawRect(Canvas canvas, int row, int column)
         {
             var rect = CreateRect(RectSize);
             canvas.Children.Add(rect);
-            Canvas.SetLeft(rect, BoardLeft + i * (RectSize + Space));
-            Canvas.SetTop(rect, BoardTop + j * (RectSize + Space));
+            Canvas.SetLeft(rect, BoardLeft + column * (RectSize + Space));
+            Canvas.SetTop(rect, BoardTop + row * (RectSize + Space));
         }
 
         private Rectangle CreateRect(int size)

@@ -37,14 +37,6 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void GetPlaceWithNumber2()
-        {
-            var board = new CrossBoard().LoadFromCsv(FileName2, CsvSeparator);
-            var places = board.GetPlaces();
-
-        }
-
-        [Fact]
         public void GetFirstHorizontalPlace()
         {
             var board = new CrossBoard().LoadFromCsv(FileName2, CsvSeparator);
