@@ -45,7 +45,5 @@ namespace CrossWord
 
             return Enumerable.Range(0, rows.Length).Select(i => GetLine(rows[i]).Reverse()).ToArray();
         }
-
-
     }
 }

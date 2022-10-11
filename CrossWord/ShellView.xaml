@@ -25,6 +25,9 @@
                             Height="22" Width="120" Margin="0, 5" HorizontalAlignment="Right"/>
                 </DockPanel>
             </GroupBox>
+            <GroupBox DockPanel.Dock="Top">
+                <Button Name="DrawBoard" Content="Рисовать поле" Height="22" Width="120" Margin="0, 5"/>
+            </GroupBox>
             <StackPanel></StackPanel>
         </DockPanel>
 

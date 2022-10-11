@@ -6,6 +6,7 @@ namespace CrossWord
 {
     public class ShellViewModel : Screen, IShell
     {
+        private readonly IWindowManager _windowManager;
         private const string Path = "C:\\VsGitProjects\\CrossWords\\Data\\";
         private const string CorpusFilename = Path + "words.txt";
         // private const string JsonFile = "c:\\VsGitProjects\\CrossWords\\Dictionaries\\harrix.dev\\russian_nouns_with_definition.json";
@@ -34,6 +35,12 @@ namespace CrossWord
                 NotifyOfPropertyChange();
             }
         }
+
+        public ShellViewModel(IWindowManager windowManager)
+        {
+            _windowManager = windowManager;
+        }
+
 
         public void SelectFile()
         {
@@ -108,6 +115,12 @@ namespace CrossWord
             if (r.IsCanceled)
                 e.Cancel = true;
             e.Result = r;
+        }
+
+        public void DrawBoard()
+        {
+            var vm = new PainterViewModel();
+            _windowManager.ShowDialogAsync(vm);
         }
     }
 }
