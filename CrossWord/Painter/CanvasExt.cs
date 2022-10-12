@@ -23,7 +23,7 @@ namespace CrossWord
 
                     rectangle.Fill = isShadowed
                         ? board[i, j] ? Brushes.White : Brushes.LightGray
-                        : board[i, j] ? Brushes.White : Brushes.LightCyan;
+                        : board[i, j] ? Brushes.White : Brushes.Aquamarine;
                     canvas.Children.Add(rectangle);
 
                     Canvas.SetLeft(rectangle, i * (rectSize + space) - (halfWidth && i > 0 ? 0.5 * rectSize : 0));

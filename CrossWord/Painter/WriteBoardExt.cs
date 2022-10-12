@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CrossWord
 {
-    public static class BoardExt
+    public static class WriteBoardExt
     {
         public static IEnumerable<string> Wrap(this IEnumerable<string> rows)
         {
@@ -27,7 +27,7 @@ namespace CrossWord
                 .ToArray().RotateRows();
         }
 
-      
+
         public static IEnumerable<string> ToStrings(this char[,] board)
         {
             for (int j = 0; j < board.GetLength(1); j++)
@@ -41,10 +41,10 @@ namespace CrossWord
             }
         }
 
-        public static char[,] ToFullBoard(this bool[,] quarter)
+        public static char[,] ToFullBoard(this bool[,] quarter, bool isHorizontalAxisThroughLetter, bool isVerticalAxisThroughLetter)
         {
-            var width = quarter.GetLength(0) * 2;
-            var height = quarter.GetLength(1) * 2;
+            var width = quarter.GetLength(0) * 2 - (isVerticalAxisThroughLetter ? 1 : 0);
+            var height = quarter.GetLength(1) * 2 - (isHorizontalAxisThroughLetter ? 1 : 0);
             var full = new char[width, height];
 
             for (int j = 0; j < quarter.GetLength(1); j++)
@@ -53,9 +53,13 @@ namespace CrossWord
                 {
                     var c = quarter[i, j] ? '0' : '1';
                     full[i, j] = c;
-                    full[width - i - 1, j] = c;
-                    full[i, height - j - 1] = c;
-                    full[width - i - 1, height - j - 1] = c;
+
+                    var iMirror = width - i - 1;
+                    var jMirror = height - j - 1;
+
+                    full[iMirror, j] = c;
+                    full[i, jMirror] = c;
+                    full[iMirror, jMirror] = c;
                 }
             }
 
