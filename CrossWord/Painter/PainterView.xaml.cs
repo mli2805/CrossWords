@@ -1,10 +1,7 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Controls;
-using CrossWord.Annotations;
 using Microsoft.Win32;
 
 namespace CrossWord
@@ -27,13 +24,8 @@ namespace CrossWord
         public PainterView()
         {
             InitializeComponent();
-            MyCanvas1.Height = QuarterVerticalSize;
-            MyCanvas1.Width = QuarterHorizontalSize;
-            MyCanvas2.Height = QuarterVerticalSize;
-            MyCanvas2.Width = QuarterHorizontalSize;
-            MyCanvas3.Width = QuarterHorizontalSize;
-            MyCanvas4.Width = QuarterHorizontalSize;
 
+            SetCanvasesSize();
             DrawRectangles();
         }
 
@@ -100,15 +92,8 @@ namespace CrossWord
             if (CbHorizontal.IsChecked == null) return;
 
             IsHorizontalAxisThroughLetter = (bool)CbHorizontal.IsChecked;
-            MyCanvas1.Height = QuarterVerticalSize;
-            MyCanvas1.Width = QuarterHorizontalSize;
-            MyCanvas2.Height = QuarterVerticalSize;
-            MyCanvas2.Width = QuarterHorizontalSize;   
-            MyCanvas3.Width = QuarterHorizontalSize;
-            MyCanvas4.Width = QuarterHorizontalSize; 
-            MyCanvas2.Children.Clear();
-            MyCanvas3.Children.Clear();
-            MyCanvas4.Children.Clear();
+            SetCanvasesSize();
+            ClearCanvases();
             DrawRectangles();
         }
 
@@ -117,16 +102,27 @@ namespace CrossWord
             if (CbVertical.IsChecked == null) return;
 
             IsVerticalAxisThroughLetter = (bool)CbVertical.IsChecked;
+            SetCanvasesSize();
+            ClearCanvases();
+            DrawRectangles();
+        }
+
+        private void ClearCanvases()
+        {
+            MyCanvas1.Children.Clear();
+            MyCanvas2.Children.Clear();
+            MyCanvas3.Children.Clear();
+            MyCanvas4.Children.Clear();
+        }
+
+        private void SetCanvasesSize()
+        {
             MyCanvas1.Height = QuarterVerticalSize;
             MyCanvas1.Width = QuarterHorizontalSize;
             MyCanvas2.Height = QuarterVerticalSize;
             MyCanvas2.Width = QuarterHorizontalSize;
             MyCanvas3.Width = QuarterHorizontalSize;
             MyCanvas4.Width = QuarterHorizontalSize;
-            MyCanvas2.Children.Clear();
-            MyCanvas3.Children.Clear();
-            MyCanvas4.Children.Clear();
-            DrawRectangles();
         }
     }
 }
