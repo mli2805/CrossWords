@@ -16,8 +16,6 @@ namespace CrossWord
         private const int BoardLeft = 340;
         private const int BoardTop = 40;
 
-
-
         public ShellView()
         {
             InitializeComponent();

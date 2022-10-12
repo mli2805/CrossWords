@@ -18,16 +18,28 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <DockPanel Grid.Row="0" Grid.Column="0">
-            <GroupBox Margin="5">
+        <DockPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Margin="0,0, 30, 0">
+            <GroupBox Margin="5" DockPanel.Dock="Top">
                 <StackPanel>
                     <Button Content="Сохранить как" Height="22" Width="120" Margin="5" HorizontalAlignment="Left" Click="SaveAs"/>
                     <TextBlock Margin="5" Height="22" Background="AliceBlue"/>
                 </StackPanel>
             </GroupBox>
+            <GroupBox Margin="5" DockPanel.Dock="Top">
+                <StackPanel>
+                    <TextBlock Margin="5" Height="22" Name="OpenFileName"/>
+                    <Button Content="Загрузить" Height="22" Width="120" Margin="5" HorizontalAlignment="Left" Click="Open"/>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel></StackPanel>
         </DockPanel>
 
-        <Canvas Grid.Row="1" Grid.Column="1" Name="MyCanvas1" Margin="0" Background="LightGray" MouseLeftButtonUp="MyCanvas1_MouseLeftButtonUp"/>
+        <CheckBox Grid.Row="1" Grid.Column="0" Margin="380, 660, 0, 0" Content="Ось через букву" 
+                  Name="CbHorizontal" Click="CbHorizontal_Click" />
+        <CheckBox Grid.Row="0" Grid.Column="2" Margin="3, 75, 0, 0" Content="Ось через букву" 
+                  Name="CbVertical" Click="CbVertical_Click" />
+
+        <Canvas Grid.Row="1" Grid.Column="1" Name="MyCanvas1" Margin="0" Background="LightPink" MouseLeftButtonUp="MyCanvas1_MouseLeftButtonUp"/>
         <Canvas Grid.Row="1" Grid.Column="2" Name="MyCanvas2" Margin="0" Background="DarkGray"/>
         <Canvas Grid.Row="2" Grid.Column="1" Name="MyCanvas3" Margin="0" Background="DarkGray"/>
         <Canvas Grid.Row="2" Grid.Column="2" Name="MyCanvas4" Margin="0" Background="DarkGray"/>

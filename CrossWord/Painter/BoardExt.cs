@@ -61,5 +61,23 @@ namespace CrossWord
 
             return full;
         }
+
+        public static bool[,] Turn(this bool[,] quarter, bool horizontal)
+        {
+            var result = new bool[quarter.GetLength(0), quarter.GetLength(1)];
+
+            for (int j = 0; j < quarter.GetLength(1); j++)
+            {
+                for (int i = 0; i < quarter.GetLength(0); i++)
+                {
+                    if (horizontal)
+                        result[quarter.GetLength(0) - i - 1, j] = quarter[i, j];
+                    else
+                        result[i, quarter.GetLength(1) - j - 1] = quarter[i, j];
+                }
+            }
+
+            return result;
+        }
     }
 }
