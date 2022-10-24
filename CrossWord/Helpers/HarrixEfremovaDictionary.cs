@@ -10,6 +10,9 @@ namespace CrossWord
     //    var jsonString = File.ReadAllText(JsonFile);
     //    var words = HarrixEfremovaDictionary.FromJson(jsonString).Keys.ToList();
 
+
+    // для загрузки из текстового файла, далее будет загрузка из БД - станет не нужен
+
     public class HarrixEfremovaDictionary
     {
         [JsonProperty("definition")]

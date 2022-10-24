@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using Caliburn.Micro;
 using Microsoft.Win32;
 
@@ -8,6 +9,7 @@ namespace CrossWord
     {
         private readonly IWindowManager _windowManager;
         private const string Path = "C:\\VsGitProjects\\CrossWords\\Data\\";
+        private const string DictPath = "C:\\VsGitProjects\\CrossWords\\Dictionaries\\";
         private const string CorpusFilename = Path + "words.txt";
         // private const string JsonFile = "c:\\VsGitProjects\\CrossWords\\Dictionaries\\harrix.dev\\russian_nouns_with_definition.json";
 
@@ -36,11 +38,36 @@ namespace CrossWord
             }
         }
 
+        public string DictionaryTotal { get; set; }
+        public string DictionaryRemark { get; set; }
+
+        private DataRepository _repository;
+
         public ShellViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
+
+            _repository = new DataRepository();
+
+            DictionaryTotal = $"Dictionary contains {_repository.GetCountAsync().Result} words";
+            DictionaryRemark = "Слова могут повторяться (Ожегов - Ефремова)";
         }
 
+        public async void AddWordFromFileToDict()
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.InitialDirectory = DictPath;
+            dlg.Filter = "text files (*.txt)|*.txt";
+            if (dlg.ShowDialog() != true) return;
+
+
+            using var cursor = new WaitCursor();
+            var fileToAdd = dlg.FileName;
+            // var result = await _repository.AddFromFile(fileToAdd, "efremova", "Словарь Ефремовой", TextToDbParsing.EfremovaToDbWord);
+            // var result =await _repository.AddFromFile(fileToAdd, "ozhegov", "Словарь С.И.Ожегова", TextToDbParsing.OzhegovToDbWord);
+            var result =await _repository.AddFromFile(fileToAdd, "peaks", "highest mountain peaks", TextToDbParsing.GeographyToDbWord);
+            Debug.WriteLine(result);
+        }
 
         public void SelectFile()
         {
@@ -106,7 +133,8 @@ namespace CrossWord
                     SelectedFile = newFilename;
                     Message = "Готово!";
                 }
-                else Message = "Не удалось составить!"; }
+                else Message = "Не удалось составить!";
+            }
         }
 
         private void Bw_DoWork(object? sender, DoWorkEventArgs e)
@@ -121,6 +149,11 @@ namespace CrossWord
         {
             var vm = new PainterViewModel();
             _windowManager.ShowDialogAsync(vm);
+        }
+
+        public void Close()
+        {
+            TryCloseAsync();
         }
     }
 }
