@@ -24,6 +24,12 @@ namespace CrossWord
             return this;
         }
 
+        public Corpus FromList(List<string> words)
+        {
+            Calibrate(words);
+            return this;
+        }
+
         private void Calibrate(List<string> content)
         {
             const int maxLength = 25;

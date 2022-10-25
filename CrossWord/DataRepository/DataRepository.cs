@@ -21,6 +21,37 @@ namespace CrossWord
             db.Database.EnsureCreated();
         }
 
+        public async Task<IEnumerable<WordsDictVm>> GetWordSources()
+        {
+            await using var db = new CrosswordDbContext(DbPath);
+            var sources = await db.WordSources.ToListAsync();
+            var result = new List<WordsDictVm>();
+            foreach (var source in sources)
+            {
+                var vm = new WordsDictVm()
+                {
+                    Code = source.Code,
+                    Description = source.Description,
+                    Count = await db.DbWords.CountAsync(w => w.Source == source.Code),
+                };
+                result.Add(vm);
+            }
+            return result;
+        }
+
+        public async Task<List<string>> GetUniqueWordsAsync(IEnumerable<WordsDictVm> dictVms)
+        {
+            var result = new List<string>();
+            await using var db = new CrosswordDbContext(DbPath);
+            foreach (var dictVm in dictVms.Where(d => d.IsSelected))
+            {
+                var ws = db.DbWords.Where(w => w.Source == dictVm.Code && w.Level == 0).Select(e => e.TheWord);
+                result = result.Union(ws).ToList();
+            }
+
+            return result;
+        }
+
         public async Task<int> GetCountAsync()
         {
             await using var db = new CrosswordDbContext(DbPath);
@@ -35,7 +66,7 @@ namespace CrossWord
             if (db.WordSources.FirstOrDefault(x => x.Code == code) == null)
                 db.WordSources.Add(new WordSource(code, sourceDescription));
 
-            db.DbWords.RemoveRange(db.DbWords.Where(x=>x.Source == code));
+            db.DbWords.RemoveRange(db.DbWords.Where(x => x.Source == code));
             await db.SaveChangesAsync();
 
             var portion = new List<DbWord>();

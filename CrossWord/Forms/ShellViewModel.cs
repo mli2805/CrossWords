@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using Caliburn.Micro;
 using Microsoft.Win32;
@@ -38,8 +40,25 @@ namespace CrossWord
             }
         }
 
+        public ObservableCollection<WordsDictVm> WordDictionaries { get; set; }
         public string DictionaryTotal { get; set; }
         public string DictionaryRemark { get; set; }
+        public List<string>? SelectedWords { get; set; }
+
+        private int _selectedCount;
+        public int SelectedCount    
+        {
+            get => _selectedCount;
+            set
+            {
+                if (value == _selectedCount) return;
+                _selectedCount = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(SelectedCountMessage));
+            }
+        }
+
+        public string SelectedCountMessage => $"Выбрано {SelectedCount} слов";
 
         private DataRepository _repository;
 
@@ -49,8 +68,20 @@ namespace CrossWord
 
             _repository = new DataRepository();
 
-            DictionaryTotal = $"Dictionary contains {_repository.GetCountAsync().Result} words";
+            WordDictionaries = new ObservableCollection<WordsDictVm>(_repository.GetWordSources().Result);
+            foreach (var wordDictionary in WordDictionaries)
+            {
+                wordDictionary.PropertyChanged += WordDictionary_PropertyChanged;
+            }
+
+            DictionaryTotal = $"Словари содержат {_repository.GetCountAsync().Result} слов";
             DictionaryRemark = "Слова могут повторяться (Ожегов - Ефремова)";
+        }
+
+        private async void WordDictionary_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SelectedWords = await _repository.GetUniqueWordsAsync(WordDictionaries);
+            SelectedCount = SelectedWords.Count;
         }
 
         public async void AddWordFromFileToDict()
@@ -65,7 +96,7 @@ namespace CrossWord
             var fileToAdd = dlg.FileName;
             // var result = await _repository.AddFromFile(fileToAdd, "efremova", "Словарь Ефремовой", TextToDbParsing.EfremovaToDbWord);
             // var result =await _repository.AddFromFile(fileToAdd, "ozhegov", "Словарь С.И.Ожегова", TextToDbParsing.OzhegovToDbWord);
-            var result =await _repository.AddFromFile(fileToAdd, "peaks", "highest mountain peaks", TextToDbParsing.GeographyToDbWord);
+            var result = await _repository.AddFromFile(fileToAdd, "peaks", "highest mountain peaks", TextToDbParsing.GeographyToDbWord);
             Debug.WriteLine(result);
         }
 
@@ -83,12 +114,15 @@ namespace CrossWord
         private CrossBoard _board = new CrossBoard();
         private Corpus _corpus = new Corpus();
         private BackgroundWorker _bw = new BackgroundWorker();
+
         public void Compose()
         {
             Message = "";
             _board = new CrossBoard().LoadFromCsv(SelectedFile, ";");
             // _corpus = new Corpus().LoadHarrixEfremovaJson(JsonFile);
-            _corpus = new Corpus().LoadFromTxt(CorpusFilename);
+            //_corpus = new Corpus().LoadFromTxt(CorpusFilename);
+            if (SelectedWords == null) return;
+            _corpus = new Corpus().FromList(SelectedWords);
 
             _bw.WorkerReportsProgress = true;
             _bw.WorkerSupportsCancellation = true;

@@ -10,7 +10,6 @@
             return word;
         }
 
-
         //  https://harrix.dev/blog/2018/russian-nouns/
         public static DbWord EfremovaToDbWord(string s, string sourceCode)
         {
