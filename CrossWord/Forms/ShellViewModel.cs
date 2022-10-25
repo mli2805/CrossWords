@@ -10,9 +10,9 @@ namespace CrossWord
     public class ShellViewModel : Screen, IShell
     {
         private readonly IWindowManager _windowManager;
-        private const string Path = "C:\\VsGitProjects\\CrossWords\\Data\\";
+        private const string Path = "C:\\VsGitProjects\\CrossWords\\Boards\\";
         private const string DictPath = "C:\\VsGitProjects\\CrossWords\\Dictionaries\\";
-        private const string CorpusFilename = Path + "words.txt";
+        //private const string CorpusFilename = Path + "words.txt";
         // private const string JsonFile = "c:\\VsGitProjects\\CrossWords\\Dictionaries\\harrix.dev\\russian_nouns_with_definition.json";
 
         private string _selectedFile = "";
@@ -91,12 +91,12 @@ namespace CrossWord
             dlg.Filter = "text files (*.txt)|*.txt";
             if (dlg.ShowDialog() != true) return;
 
-
             using var cursor = new WaitCursor();
             var fileToAdd = dlg.FileName;
             // var result = await _repository.AddFromFile(fileToAdd, "efremova", "Словарь Ефремовой", TextToDbParsing.EfremovaToDbWord);
             // var result =await _repository.AddFromFile(fileToAdd, "ozhegov", "Словарь С.И.Ожегова", TextToDbParsing.OzhegovToDbWord);
-            var result = await _repository.AddFromFile(fileToAdd, "peaks", "highest mountain peaks", TextToDbParsing.GeographyToDbWord);
+            var result = await _repository
+                .AddFromFile(fileToAdd, "peaks", "highest mountain peaks", TextToDbParsing.GeographyToDbWord);
             Debug.WriteLine(result);
         }
 
